@@ -3,7 +3,7 @@ from paillier import Paillier
 
 class Server:
     def __init__(self, db_size=10):
-        print(f"🗄️ Generating a database with {db_size} elements...")
+        print(f"Generating a database with {db_size} elements...")
         self.db_size = db_size
         self.database = [random.randint(1, 100) for _ in range(db_size)]
         print(f"Database initialized: {self.database}")
