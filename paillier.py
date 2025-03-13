@@ -4,28 +4,29 @@ import gmpy2
 
 class Paillier:
     def __init__(self, bits):
+        print("Generating Paillier key pair...")
         self.keyGen(bits)
 
     def keyGen(self, bits):
         # Generate two large prime numbers p and q
         self.p = number.getPrime(bits)
         self.q = number.getPrime(bits)
-        print(f"Generated primes: p={self.p}, q={self.q}")
+        print(f"p={self.p}\nq={self.q}")
+
         
         # Compute n and lambda
         self.n = self.p * self.q
         self.lambda_ = (self.p - 1) * (self.q - 1)
-        print(f"Computed n={self.n} and lambda={self.lambda_}")
+        print(f"\nComputed n={self.n}\nComputed lambda={self.lambda_}")
         
         # Compute g and mu
         self.g = self.n + 1
         self.mu = gmpy2.invert(self.lambda_, self.n)
-        print(f"Computed g={self.g} and mu={self.mu}")
+        print(f"\nComputed g={self.g} and mu={self.mu}")
         
         # Public and private keys
         self.public_key = (self.n, self.g)
         self.private_key = (self.lambda_, self.mu)
-        print("Public and private keys successfully created!")
 
     def encrypt(self, message: int):
         print(f"Encrypting message: {message}")
@@ -45,6 +46,7 @@ class Paillier:
         
         message = (L(pow(ciphertext, self.lambda_, n2)) * self.mu) % self.n
         print(f"Decrypted message: {message}")
+        print(f"Decrypted message (as string): {int_to_string(message)}")
         return message
     
 # Encryption / Decryption test
@@ -57,6 +59,4 @@ print(f"Message as integer: {message_int}")
 
 ciphertext = phe.encrypt(message_int)
 decrypted_message = phe.decrypt(ciphertext)
-
-assert int_to_string(decrypted_message) == message
-print("Encryption/Decryption successful!")
+assert decrypted_message == message_int, "Decryption failed! Message mismatch."
