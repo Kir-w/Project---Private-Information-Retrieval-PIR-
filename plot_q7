@@ -1,0 +1,25 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Define Paillier encryption parameters
+paillier_key_size = 1024  # Bits per prime number
+ciphertext_size = 2 * paillier_key_size  # Each ciphertext is 2048 bits
+
+# Define the database sizes to test
+db_sizes = np.arange(10, 101, 10)  # From 10 to 100 elements in steps of 10
+
+# Compute communication size in bits
+client_to_server = db_sizes * ciphertext_size  # Client sends N ciphertexts
+server_to_client = ciphertext_size  # Server sends a single ciphertext back
+
+# Plot results
+plt.figure(figsize=(10, 6))
+plt.plot(db_sizes, client_to_server, label="Client to Server (bits)", marker="o")
+plt.plot(db_sizes, [server_to_client] * len(db_sizes), label="Server to Client (bits)", marker="s")
+
+plt.xlabel("Database Size (Number of Elements)")
+plt.ylabel("Communication Size (bits)")
+plt.title("PIR Communication Overhead: Client vs Server")
+plt.legend()
+plt.grid()
+plt.show()
