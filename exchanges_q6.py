@@ -13,7 +13,7 @@ num_tests = 5  # Run multiple tests for averaging
 client = Client(bits=1024)
 
 for size in db_sizes:
-    print(f"\n🔎 Testing with database size: {size}")
+    print(f"\nTesting with database size: {size}")
 
     # Initialize server with a database of the current size
     server = Server(db_size=size)
@@ -25,21 +25,21 @@ for size in db_sizes:
     client_total_time = 0
     for _ in range(num_tests):
         start_time = time.time()
-        request_vector = client.create_request(size, index_to_retrieve)
+        request_vector = client.request(size, index_to_retrieve)
         client_total_time += (time.time() - start_time)
     client_time = client_total_time / num_tests
     client_times.append(client_time)
-    print(f"⏳ Client request time (average): {client_time:.6f} seconds")
+    print(f"Client request time (average): {client_time:.6f} seconds")
 
     # Measure server processing time (averaged over multiple runs)
     server_total_time = 0
     for _ in range(num_tests):
         start_time = time.time()
-        encrypted_response = server.process_request(request_vector, client.public_key)
+        encrypted_response = server.answerRequest(request_vector, client.public_key)
         server_total_time += (time.time() - start_time)
     server_time = server_total_time / num_tests
     server_times.append(server_time)
-    print(f"⏳ Server processing time (average): {server_time:.6f} seconds")
+    print(f"Server processing time (average): {server_time:.6f} seconds")
 
 # Plot results
 plt.figure(figsize=(10, 6))
