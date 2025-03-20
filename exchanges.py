@@ -5,21 +5,21 @@ from server import Server
 client = Client(bits=1024)
 server = Server(db_size=10)
 
-# Choose an index to retrieve
+# Choose an index to request
 index_to_retrieve = 3
 print(f"Client is requesting the value at index {index_to_retrieve}")
 
 # Client creates a request
-request_vector = client.create_request(server.db_size, index_to_retrieve)
+request_client = client.request(server.db_size, index_to_retrieve)
 
 # Server processes the request
-encrypted_response = server.process_request(request_vector, client.public_key)
+encrypted_response = server.answerRequest(request_client, client.public_key)
 
 # Client decrypts the response
-retrieved_value = client.decrypt_response(encrypted_response)
+retrieved_value = client.decryptAnswer(encrypted_response)
 
 # Verify correctness
 print(f"Retrieved value: {retrieved_value}")
-assert retrieved_value == server.database[index_to_retrieve], "PIR failed!"
-print("PIR test successful!")
+assert retrieved_value == server.database[index_to_retrieve], "PIR failed"
+print("PIR test successful")
 
